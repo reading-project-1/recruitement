@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Multilingual Reading Project — Application</title>
+<meta name="description" content="Native speakers and vendors wanted for a mobile voice recording (sentence reading) project in 37 languages. Remote.">
+<meta property="og:title" content="Multilingual Reading Project — Now Hiring (Remote)">
+<meta property="og:description" content="Native speakers needed in 37 languages across Asia, Africa, Europe and the Pacific. Individuals and vendors welcome.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0f766e">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f766e'/%3E%3Crect x='25' y='12' width='14' height='26' rx='7' fill='white'/%3E%3Cpath d='M18 32a14 14 0 0 0 28 0M32 46v7' stroke='white' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f3f6f6; --card:#ffffff; --ink:#132022; --muted:#5a6b6e; --line:#dfe6e7;
+    --accent:#0f766e; --accent-soft:#e6f4f2; --ok:#14804a; --ok-soft:#e6f6ee; --err:#c4342d;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:780px;margin:0 auto;padding:40px 16px 64px}
+
+  header.hero{margin-bottom:24px}
+  .eyebrow{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:5px 10px;border-radius:999px}
+  h1{font-size:clamp(26px,4.6vw,36px);line-height:1.15;margin:14px 0 10px;letter-spacing:-.02em}
+  .lead{color:var(--muted);margin:0;font-size:16px;max-width:640px}
+
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:22px 0 0}
+  .fact{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .fact b{display:block;font-size:12px;color:var(--muted);font-weight:500}
+  .fact span{font-weight:600;font-size:15px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px;margin-top:18px}
+  .card h2{font-size:17px;margin:0 0 4px}
+  .card .sub{color:var(--muted);font-size:14px;margin:0 0 18px}
+
+  .coverage{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:5px 11px;background:#fafcfc}
+  .chip b{font-weight:600}
+  .chip span{color:var(--muted)}
+  .search{position:relative;margin-bottom:12px}
+  .search input{padding-left:38px}
+  .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted)}
+  .rc.hide{display:none}
+  .sel-count{font-size:13px;color:var(--muted);margin:-4px 0 10px}
+  .reqs{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin:16px 0 0;padding:0;list-style:none;font-size:14px}
+  .reqs li{display:flex;gap:8px;align-items:flex-start}
+  .reqs li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:8px}
+
+  .toggle{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+  .toggle input{position:absolute;opacity:0;pointer-events:none}
+  .toggle label{border:1.5px solid var(--line);border-radius:12px;padding:14px;cursor:pointer;transition:.15s}
+  .toggle label strong{display:block;font-size:15px}
+  .toggle label small{color:var(--muted);font-size:13px}
+  .toggle input:checked + label{border-color:var(--accent);background:var(--accent-soft)}
+  .toggle input:focus-visible + label{outline:2px solid var(--accent);outline-offset:2px}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .full{grid-column:1/-1}
+  .field label.lbl{display:block;font-size:14px;font-weight:500;margin-bottom:6px}
+  .req{color:var(--err)}
+  input[type=text],input[type=email],input[type=tel],input[type=number],select,textarea{
+    width:100%;font:inherit;font-size:15px;color:var(--ink);background:#fff;border:1px solid #c9d3d4;border-radius:10px;padding:11px 12px;transition:border-color .15s, box-shadow .15s}
+  textarea{min-height:92px;resize:vertical}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(15,118,110,.15)}
+  .hint{font-size:12.5px;color:var(--muted);margin-top:5px}
+  .field.invalid:not(#resField) input,.field.invalid:not(#resField) select,.field.invalid textarea{border-color:var(--err)}
+  .rc.bad [data-k=rate]:placeholder-shown,.rc.bad select:invalid,.rc.nocap [data-k=male],.rc.nocap [data-k=female]{border-color:var(--err)}
+  .err-msg{display:none;color:var(--err);font-size:12.5px;margin-top:8px}
+  .field.invalid .err-msg{display:block}
+
+  .radios{display:flex;flex-wrap:wrap;gap:8px}
+  .radios label{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer;font-size:14px}
+  .radios input{accent-color:var(--accent)}
+
+  /* Vendor language cards */
+  .rc-list{display:grid;gap:10px}
+  .rc{border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:border-color .15s}
+  .rc.on{border-color:var(--accent)}
+  .rc-head{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;user-select:none}
+  .rc.on .rc-head{background:var(--accent-soft)}
+  .rc-head input{width:18px;height:18px;accent-color:var(--accent);flex:none}
+  .rc-head b{font-size:15px}
+  .rc-head span{margin-left:auto;font-size:12.5px;color:var(--muted)}
+  .rc-body{display:none;padding:14px;border-top:1px solid var(--line)}
+  .rc.on .rc-body{display:block}
+  .vgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .vgrid label{font-size:12.5px;font-weight:500;display:block;margin-bottom:4px;color:var(--muted)}
+  .vgrid input,.vgrid select{padding:8px 10px;font-size:14px}
+  .vgrid .total{display:flex;flex-direction:column;justify-content:flex-end}
+  .vgrid .total b{font-size:20px;line-height:38px}
+  .rc-err{display:none;color:var(--err);font-size:12.5px;margin-top:8px}
+  .rc.bad .rc-err{display:block}
+
+  .vendor-only{display:none !important}
+  body.is-vendor .vendor-only{display:block !important}
+  body.is-vendor .ind-only{display:none !important}
+
+  .consent{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--muted)}
+  .consent input{margin-top:3px;width:18px;height:18px;accent-color:var(--accent);flex:none}
+
+  .actions{margin-top:22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  button.primary{font:inherit;font-weight:600;font-size:15px;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:13px 22px;cursor:pointer;transition:filter .15s}
+  button.primary:hover{filter:brightness(1.08)}
+  button.primary:disabled{opacity:.6;cursor:progress}
+  .form-error{color:var(--err);font-size:14px}
+
+  .success{display:none;text-align:center;padding:36px 26px}
+  .success .tick{width:56px;height:56px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center;margin:0 auto 14px;font-size:28px;font-weight:700}
+  .success h2{font-size:22px;margin:0 0 8px}
+  .success p{color:var(--muted);margin:0 auto 18px;max-width:480px}
+  .must{background:#fff7e6;border:1px solid #f3d38a;color:#7a5200;border-radius:10px;padding:10px 14px;font-size:14px;font-weight:500;margin:0 auto 18px;max-width:480px}
+  .wa-list{display:grid;gap:10px;justify-items:center}
+  .wa{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:min(100%,360px);background:#1fa855;color:#fff;text-decoration:none;font-weight:600;padding:14px 24px;border-radius:12px;font-size:16px}
+  .wa:hover{filter:brightness(1.06)}
+  .wa svg{width:22px;height:22px;flex:none}
+  .wa-pending{width:min(100%,360px);font-size:14px;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:10px 14px}
+  .ref{font-size:13px;color:var(--muted);margin-top:16px}
+
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:28px}
+
+  @media (max-width:640px){
+    .wrap{padding-top:28px}
+    .facts{grid-template-columns:1fr 1fr}
+    .grid,.reqs{grid-template-columns:1fr}
+    .card{padding:20px}
+    .toggle{grid-template-columns:1fr}
+    .vgrid{grid-template-columns:1fr 1fr}
+    .vgrid .total{grid-column:1/-1}
+    .rc-head span{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="eyebrow">Now hiring · Remote</span>
+    <h1>Multilingual Reading Project</h1>
+    <p class="lead">We are looking for native speakers to read short sentences aloud and record them on a mobile phone. The recordings are used to train speech recognition (ASR) models. Individuals and vendors can apply.</p>
+    <div class="facts">
+      <div class="fact"><b>Task</b><span>Read &amp; record</span></div>
+      <div class="fact"><b>Per participant</b><span>~1 hour of audio</span></div>
+      <div class="fact"><b>Open to</b><span>Individuals &amp; Vendors</span></div>
+      <div class="fact"><b>Pay rate</b><span>To be confirmed</span></div>
+    </div>
+  </header>
+
+  <section class="card" id="coverageCard">
+    <h2>Languages we need <span id="langCount" style="color:var(--muted);font-weight:500"></span></h2>
+    <p class="sub">You must be a native speaker of the language you apply for. The number shows how many sentences each participant reads.</p>
+    <div class="coverage" id="coverage"></div>
+    <ul class="reqs">
+      <li>Adults (18+) — balanced male and female speakers</li>
+      <li>Smartphone (Android or iPhone)</li>
+      <li>A normal quiet room for recording</li>
+      <li>Clear reading of 150–900 sentences depending on the language (about 1 hour of valid audio)</li>
+    </ul>
+  </section>
+
+  <form id="appForm" novalidate>
+    <section class="card">
+      <h2>1. How are you applying?</h2>
+      <p class="sub">Vendors can register speakers for several languages. Individuals apply for themselves.</p>
+      <div class="toggle" role="radiogroup">
+        <input type="radio" name="applicantType" id="tInd" value="Individual" checked>
+        <label for="tInd"><strong>Individual</strong><small>I will record myself</small></label>
+        <input type="radio" name="applicantType" id="tVen" value="Vendor">
+        <label for="tVen"><strong>Vendor / Agency</strong><small>I can provide a group of speakers</small></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2. Your details</h2>
+      <p class="sub" id="detailsSub">Tell us how to reach you.</p>
+      <div class="grid">
+        <div class="field vendor-only full">
+          <label class="lbl" for="companyName">Company / team name <span class="req">*</span></label>
+          <input type="text" id="companyName" autocomplete="organization">
+          <div class="err-msg">Please enter your company or team name.</div>
+        </div>
+        <div class="field">
+          <label class="lbl" for="fullName"><span id="nameLabel">Full name</span> <span class="req">*</span></label>
+          <input type="text" id="fullName" autocomplete="name">
+          <div class="err-msg">Please enter your full name.</div>
+        </div>
+        <div class="field">
+          <label class="lbl" for="email">Email <span class="req">*</span></label>
+          <input type="email" id="email" autocomplete="email">
+          <div class="err-msg">Please enter a valid email address.</div>
+        </div>
+        <div class="field">
+          <label class="lbl" for="whatsapp">WhatsApp number <span class="req">*</span></label>
+          <input type="tel" id="whatsapp" placeholder="+91 98765 43210" autocomplete="tel">
+          <div class="hint">Include your country code.</div>
+          <div class="err-msg">Enter a valid number with country code (e.g. +91...).</div>
+        </div>
+        <div class="field">
+          <label class="lbl" for="basedIn"><span id="basedLabel">Country you live in</span> <span class="req">*</span></label>
+          <input type="text" id="basedIn" list="worldCountries" placeholder="Start typing a country…" autocomplete="country-name">
+          <datalist id="worldCountries"></datalist>
+          <div class="err-msg">Please enter your country.</div>
+        </div>
+        <div class="field">
+          <label class="lbl" for="city">City <span class="req">*</span></label>
+          <input type="text" id="city" autocomplete="address-level2">
+          <div class="err-msg">Please enter your city.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Individual -->
+    <section class="card ind-only">
+      <h2>3. About you as a speaker</h2>
+      <p class="sub">The project needs a balanced mix of adult male and female speakers.</p>
+      <div class="grid">
+        <div class="field">
+          <label class="lbl" for="language">Native language <span class="req">*</span></label>
+          <select id="language"></select>
+          <div class="hint" id="langHint"></div>
+          <div class="err-msg">Please select your native language.</div>
+        </div>
+        <div class="field">
+          <label class="lbl" for="gender">Gender <span class="req">*</span></label>
+          <select id="gender"><option value="">Select…</option><option>Male</option><option>Female</option></select>
+          <div class="err-msg">Please select your gender.</div>
+        </div>
+        <div class="field">
+          <label class="lbl" for="ageGroup">Age group <span class="req">*</span></label>
+          <select id="ageGroup"><option value="">Select…</option><option>18–25</option><option>26–35</option><option>36–45</option><option>46–55</option><option>56+</option></select>
+          <div class="err-msg">Please select your age group.</div>
+        </div>
+        <div class="field">
+          <label class="lbl" for="phoneType">Phone for recording <span class="req">*</span></label>
+          <select id="phoneType"><option value="">Select…</option><option>Android</option><option>iPhone</option></select>
+          <div class="err-msg">Please select your phone type.</div>
+        </div>
+        <div class="field full" id="quietField">
+          <label class="lbl">Do you have a quiet place to record? <span class="req">*</span></label>
+          <div class="radios">
+            <label><input type="radio" name="quietPlace" value="Yes"> Yes</label>
+            <label><input type="radio" name="quietPlace" value="No"> No</label>
+          </div>
+          <div class="err-msg">Please choose one.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vendor -->
+    <section class="card vendor-only">
+      <h2>3. Speakers you can provide</h2>
+      <p class="sub">Tick each language you can cover. For each one enter how many male and female speakers you can recruit, your rate and how long you need.</p>
+      <div class="field" id="resField">
+        <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="text" id="langSearch" placeholder="Search a language or country…" autocomplete="off"></div>
+        <div class="sel-count" id="selCount">No language selected yet.</div>
+        <div class="rc-list" id="rcList"></div>
+        <div class="err-msg">Select at least one language.</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>4. Experience &amp; availability</h2>
+      <p class="sub">This helps us plan the project.</p>
+      <div class="grid">
+        <div class="field full" id="expField">
+          <label class="lbl"><span id="expLabel">Have you done voice recording or speech data work before?</span> <span class="req">*</span></label>
+          <div class="radios">
+            <label><input type="radio" name="experience" value="Yes"> Yes</label>
+            <label><input type="radio" name="experience" value="No"> No</label>
+          </div>
+          <div class="err-msg">Please choose one.</div>
+        </div>
+        <div class="field full">
+          <label class="lbl" for="experienceDetails">Briefly describe your experience</label>
+          <textarea id="experienceDetails" placeholder="Projects, platforms or companies you have worked with"></textarea>
+        </div>
+        <div class="field ind-only" id="availField">
+          <label class="lbl" for="availability">Hours available per day <span class="req">*</span></label>
+          <select id="availability"><option value="">Select…</option><option>1–2 hours</option><option>3–4 hours</option><option>5+ hours</option></select>
+          <div class="err-msg">Please select availability.</div>
+        </div>
+        <div class="field" id="startField">
+          <label class="lbl" for="startDate">When can you start? <span class="req">*</span></label>
+          <select id="startDate"><option value="">Select…</option><option>Immediately</option><option>Within 1 week</option><option>Within 2 weeks</option></select>
+          <div class="err-msg">Please choose one.</div>
+        </div>
+        <div class="field full">
+          <label class="lbl" for="notes">Anything else we should know?</label>
+          <textarea id="notes" placeholder="Optional"></textarea>
+        </div>
+        <div class="field full" id="consentField">
+          <label class="consent"><input type="checkbox" id="consent"> <span id="consentText">I confirm that I am 18 or older, the information above is accurate and I agree to join the project WhatsApp group after submitting.</span></label>
+          <div class="err-msg">Please confirm to continue.</div>
+        </div>
+      </div>
+      <div class="actions">
+        <button type="submit" class="primary" id="submitBtn">Submit application</button>
+        <span class="form-error" id="formError" role="alert"></span>
+      </div>
+    </section>
+  </form>
+
+  <section class="card success" id="closed" aria-live="polite">
+    <div class="tick" style="background:#fff4d6;color:#7a5200">!</div>
+    <h2>Applications are closed</h2>
+    <p>We are not accepting new applications for this project right now. Please check back later.</p>
+  </section>
+
+  <section class="card success" id="success" aria-live="polite">
+    <div class="tick">✓</div>
+    <h2 id="successTitle">Application received</h2>
+    <p id="successText"></p>
+    <div class="must" id="mustText">Joining the WhatsApp group is required to be considered for this project.</div>
+    <div class="wa-list" id="waList"></div>
+    <div class="ref" id="refText"></div>
+  </section>
+
+  <footer>Multilingual Reading Project · Remote · Mobile voice recording</footer>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+// 1) Paste the Web App URL of THIS project's Google Sheet (a new sheet, not the Accent one)
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzOoaKwKbQhQZl_72EComDlxlry8D0DQ0IVRJt_zq-4OvY9iGchS81xH_J0x8uZ0AHG/exec";
+
+// 2) Languages (keep in sync with Code.gs). WhatsApp links go in the Sheet "Settings" tab.
+const LANGUAGES = {
+  "Bosnian":        "Bosnia and Herzegovina",
+  "Icelandic":      "Iceland",
+  "Kannada":        "India",
+  "Macedonian":     "North Macedonia",
+  "Malayalam":      "India",
+  "Azerbaijani":    "Azerbaijan / Iran",
+  "Georgian":       "Georgia",
+  "Kazakh":         "Kazakhstan",
+  "Marathi":        "India",
+  "Odia":           "India",
+  "Swahili":        "Kenya / Tanzania",
+  "Assamese":       "India",
+  "Hausa":          "Nigeria / Niger",
+  "Javanese":       "Indonesia",
+  "Punjabi":        "India / Pakistan",
+  "Kyrgyz":         "Kyrgyzstan",
+  "Tajik":          "Tajikistan",
+  "Amharic":        "Ethiopia",
+  "Igbo":           "Nigeria",
+  "Lao":            "Laos",
+  "Mongolian":      "Mongolia",
+  "Pashto":         "Afghanistan / Pakistan",
+  "Yoruba":         "Nigeria / Benin",
+  "Armenian":       "Armenia",
+  "Khmer":          "Cambodia",
+  "Belarusian":     "Belarus",
+  "Asturian":       "Spain (Asturias)",
+  "Luxembourgish":  "Luxembourg",
+  "Māori":          "New Zealand",
+  "Occitan":        "France / Spain / Italy",
+  "Ganda":          "Uganda",
+  "Kurdish":        "Iraq / Turkey / Iran / Syria",
+  "Northern Sotho": "South Africa",
+  "Shona":          "Zimbabwe",
+  "Sindhi":         "Pakistan / India",
+  "Wolof":          "Senegal / Gambia",
+  "Xhosa":          "South Africa"
+};
+// Sentences each participant reads (about 1 hour of valid audio)
+const SENTENCES = {
+  "Bosnian":        350,
+  "Icelandic":      250,
+  "Kannada":        250,
+  "Macedonian":     250,
+  "Malayalam":      350,
+  "Azerbaijani":    250,
+  "Georgian":       250,
+  "Kazakh":         300,
+  "Marathi":        450,
+  "Odia":           350,
+  "Swahili":        250,
+  "Assamese":       350,
+  "Hausa":          450,
+  "Javanese":       200,
+  "Punjabi":        300,
+  "Kyrgyz":         350,
+  "Tajik":          400,
+  "Amharic":        250,
+  "Igbo":           450,
+  "Lao":            250,
+  "Mongolian":      900,
+  "Pashto":         250,
+  "Yoruba":         400,
+  "Armenian":       150,
+  "Khmer":          200,
+  "Belarusian":     500,
+  "Asturian":       500,
+  "Luxembourgish":  500,
+  "Māori":          500,
+  "Occitan":        500,
+  "Ganda":          500,
+  "Kurdish":        500,
+  "Northern Sotho": 500,
+  "Shona":          500,
+  "Sindhi":         500,
+  "Wolof":          500,
+  "Xhosa":          500
+};
+const WORLD = ["Afghanistan","Algeria","Argentina","Australia","Azerbaijan","Bahrain","Bangladesh","Benin","Brazil","Burkina Faso","Cameroon","Canada","Chad","China","Côte d'Ivoire","DR Congo","Egypt","Ethiopia","France","Georgia","Germany","Ghana","India","Indonesia","Iran","Iraq","Italy","Japan","Jordan","Kazakhstan","Kenya","Kuwait","Malaysia","Mali","Mozambique","Myanmar","Nepal","Netherlands","Niger","Nigeria","Oman","Pakistan","Philippines","Qatar","Russia","Rwanda","Saudi Arabia","Senegal","Singapore","South Africa","Sri Lanka","Sudan","Tanzania","Thailand","Turkey","Uganda","United Arab Emirates","United Kingdom","United States","Uzbekistan","Vietnam","Zambia","Zimbabwe"];
+/* ============================================================ */
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const form = $("#appForm");
+const isVendor = () => form.applicantType.value === "Vendor";
+const int = v => { const n = parseInt(v, 10); return n > 0 ? n : 0; };
+
+const LANG_LIST = Object.keys(LANGUAGES).sort((a, b) => a.localeCompare(b));
+$("#langCount").textContent = `(${LANG_LIST.length})`;
+$("#coverage").innerHTML = LANG_LIST
+  .map(l => `<span class="chip" title="${esc(LANGUAGES[l])}"><b>${esc(l)}</b> <span>· ${SENTENCES[l]}</span></span>`).join("");
+$("#language").innerHTML = `<option value="">Select…</option>` + LANG_LIST.map(l => `<option>${esc(l)}</option>`).join("");
+$("#language").addEventListener("change", e => {
+  const l = e.target.value;
+  $("#langHint").textContent = l ? `${LANGUAGES[l]} · you will read about ${SENTENCES[l]} sentences.` : "";
+});
+$("#worldCountries").innerHTML = WORLD.map(c => `<option value="${esc(c)}">`).join("");
+
+/* ---------- Applicant type ---------- */
+function syncType(){
+  const v = isVendor();
+  document.body.classList.toggle("is-vendor", v);
+  $("#nameLabel").textContent = v ? "Contact person name" : "Full name";
+  $("#basedLabel").textContent = v ? "Company based in" : "Country you live in";
+  $("#detailsSub").textContent = v ? "Company details and the main contact person." : "Tell us how to reach you.";
+  $("#expLabel").textContent = v ? "Has your team delivered voice recording or speech data projects before?" : "Have you done voice recording or speech data work before?";
+  $("#consentText").textContent = v
+    ? "I confirm that all speakers I provide are 18 or older, the information above is accurate and I agree to join the WhatsApp group for each language I selected."
+    : "I confirm that I am 18 or older, the information above is accurate and I agree to join the project WhatsApp group after submitting.";
+  document.querySelectorAll(".field.invalid, .rc.bad").forEach(f => f.classList.remove("invalid","bad"));
+  $("#formError").textContent = "";
+}
+form.querySelectorAll('input[name=applicantType]').forEach(r => r.addEventListener("change", syncType));
+
+/* ---------- Vendor language cards ---------- */
+$("#rcList").innerHTML = LANG_LIST.map(l => [l, LANGUAGES[l]]).map(([l, r]) => `
+  <div class="rc" data-lang="${esc(l)}" data-search="${esc((l + " " + r).toLowerCase())}">
+    <label class="rc-head"><input type="checkbox" aria-label="${esc(l)}"><b>${esc(l)}</b><span>${esc(r)} · ${SENTENCES[l]} sentences</span></label>
+    <div class="rc-body">
+      <div class="vgrid">
+        <div><label>Male speakers</label><input type="number" min="0" step="1" inputmode="numeric" data-k="male" placeholder="0"></div>
+        <div><label>Female speakers</label><input type="number" min="0" step="1" inputmode="numeric" data-k="female" placeholder="0"></div>
+        <div class="total"><label>Total</label><b data-k="total">0</b></div>
+        <div><label>Your rate (USD / participant-hour)</label><input type="number" min="0" step="0.5" inputmode="decimal" data-k="rate" placeholder="e.g. 12"></div>
+        <div><label>Time needed</label>
+          <select data-k="timeline" required><option value="">Select…</option><option>1 week</option><option>2 weeks</option><option>3 weeks</option><option>4 weeks</option><option>5–6 weeks</option><option>6+ weeks</option></select></div>
+      </div>
+      <div class="rc-err">Enter at least one speaker, your rate and the time needed.</div>
+    </div>
+  </div>`).join("");
+
+const norm = t => t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+$("#langSearch").addEventListener("input", e => {
+  const q = norm(e.target.value.trim());
+  document.querySelectorAll(".rc").forEach(rc => rc.classList.toggle("hide", !!q && !norm(rc.dataset.search).includes(q) && !rc.classList.contains("on")));
+});
+function updateSelCount(){
+  const sel = [...document.querySelectorAll(".rc.on")].map(rc => rc.dataset.lang);
+  $("#selCount").textContent = sel.length ? `Selected (${sel.length}): ${sel.join(", ")}` : "No language selected yet.";
+}
+document.querySelectorAll(".rc").forEach(rc => {
+  const cb = rc.querySelector(".rc-head input");
+  cb.addEventListener("change", () => {
+    rc.classList.toggle("on", cb.checked);
+    updateSelCount();
+    rc.classList.remove("bad");
+  });
+  rc.querySelectorAll("input,select").forEach(i => i.addEventListener("input", () => {
+    rc.querySelector('[data-k=total]').textContent = int(rc.querySelector('[data-k=male]').value) + int(rc.querySelector('[data-k=female]').value);
+    rc.classList.remove("bad","nocap");
+    if(!document.querySelector(".rc.bad") && vendorRows().length) $("#resField").classList.remove("invalid");
+  }));
+});
+
+function vendorRows(){
+  return [...document.querySelectorAll(".rc")].filter(rc => rc.querySelector(".rc-head input").checked).map(rc => {
+    const g = k => rc.querySelector(`[data-k=${k}]`).value;
+    const male = int(g("male")), female = int(g("female"));
+    return { el: rc, language: rc.dataset.lang, male, female, capacity: male + female, vendorRate: parseFloat(g("rate")) || 0, vendorTimeline: g("timeline") };
+  });
+}
+
+/* ---------- Validation ---------- */
+function setInvalid(el, bad){ el.classList.toggle("invalid", bad); return !bad; }
+const fieldOf = id => document.getElementById(id).closest(".field");
+
+function validate(){
+  const v = isVendor();
+  let ok = true;
+  ["fullName","city","basedIn"].concat(v ? ["companyName"] : []).forEach(id => { ok = setInvalid(fieldOf(id), !$("#"+id).value.trim()) && ok; });
+  ok = setInvalid(fieldOf("email"), !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($("#email").value.trim())) && ok;
+  ok = setInvalid(fieldOf("whatsapp"), !/^\+\d{8,15}$/.test($("#whatsapp").value.replace(/[\s\-()]/g,""))) && ok;
+
+  if(v){
+    const rows = vendorRows();
+    let bad = !rows.length;
+    rows.forEach(r => { const b = !r.capacity || !(r.vendorRate > 0) || !r.vendorTimeline; r.el.classList.toggle("bad", b); r.el.classList.toggle("nocap", !r.capacity); if(b) bad = true; });
+    $("#resField .err-msg").textContent = rows.length ? "Complete the details for each selected language." : "Select at least one language.";
+    ok = setInvalid($("#resField"), bad) && ok;
+  } else {
+    ["language","gender","ageGroup","phoneType","availability"].forEach(id => { ok = setInvalid(fieldOf(id), !$("#"+id).value) && ok; });
+    ok = setInvalid($("#quietField"), !form.quietPlace.value) && ok;
+  }
+  ok = setInvalid($("#expField"), !form.experience.value) && ok;
+  ok = setInvalid(fieldOf("startDate"), !$("#startDate").value) && ok;
+  ok = setInvalid($("#consentField"), !$("#consent").checked) && ok;
+  return ok;
+}
+["input","change"].forEach(ev => form.addEventListener(ev, e => {
+  const f = e.target.closest(".field"); if(f && f.id !== "resField") f.classList.remove("invalid");
+  if(!document.querySelector(".field.invalid")) $("#formError").textContent = "";
+}));
+
+/* ---------- Submit ---------- */
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  $("#formError").textContent = "";
+  if(!validate()){
+    $("#formError").textContent = "Please fix the highlighted fields.";
+    const first = document.querySelector(".field.invalid, .rc.bad");
+    if(first) first.scrollIntoView({behavior:"smooth", block:"center"});
+    return;
+  }
+  const v = isVendor();
+  const entries = v
+    ? vendorRows().map(({el, ...r}) => r)
+    : [{ language: $("#language").value, gender: $("#gender").value, ageGroup: $("#ageGroup").value,
+         phoneType: $("#phoneType").value, quietPlace: form.quietPlace.value }];
+
+  const payload = {
+    reference: "MR-" + Date.now().toString(36).toUpperCase(),
+    applicantType: form.applicantType.value,
+    companyName: v ? $("#companyName").value.trim() : "",
+    fullName: $("#fullName").value.trim(),
+    email: $("#email").value.trim(),
+    whatsapp: $("#whatsapp").value.trim(),
+    basedIn: $("#basedIn").value.trim(),
+    city: $("#city").value.trim(),
+    experience: form.experience.value,
+    experienceDetails: $("#experienceDetails").value.trim(),
+    availability: v ? "" : $("#availability").value,
+    startDate: $("#startDate").value,
+    notes: $("#notes").value.trim(),
+    entries
+  };
+
+  const btn = $("#submitBtn");
+  btn.disabled = true; btn.textContent = "Submitting…";
+  try{
+    const res = await fetch(SCRIPT_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
+    const data = await res.json();
+    if(data.status === "closed"){ showClosed(); return; }
+    if(data.status !== "success") throw new Error(data.message || "Submission failed. Please try again.");
+    showSuccess(payload, data.results || []);
+  }catch(err){
+    $("#formError").textContent = err && err.message && !/fetch|JSON|Unexpected/i.test(err.message)
+      ? err.message : "Could not submit. Check your internet connection and try again.";
+    btn.disabled = false; btn.textContent = "Submit application";
+  }
+});
+
+/* ---------- Success / closed ---------- */
+const validWa = u => typeof u === "string" && /^https:\/\/(chat\.whatsapp\.com|wa\.me)\/[A-Za-z0-9]/.test(u);
+const WA_ICON = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 3.5A11.8 11.8 0 0 0 12 0C5.4 0 .1 5.3.1 11.9c0 2.1.6 4.1 1.6 5.9L0 24l6.4-1.7a11.9 11.9 0 0 0 5.6 1.4h.1c6.6 0 11.9-5.3 11.9-11.9 0-3.2-1.2-6.2-3.5-8.3ZM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4a9.9 9.9 0 1 1 8.4 4.7Zm5.4-7.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1l-.9 1.2c-.2.2-.3.2-.6.1a8.1 8.1 0 0 1-4-3.5c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.7.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4l-.9-.4Z"/></svg>`;
+
+function showSuccess(p, results){
+  const by = {}; results.forEach(r => by[r.language] = r);
+  const langs = p.entries.map(e => e.language);
+  const dup = langs.filter(l => by[l] && by[l].status === "duplicate");
+  const allDup = dup.length === langs.length;
+  const list = langs.length > 1 ? langs.slice(0,-1).join(", ") + " and " + langs.slice(-1) : langs[0];
+  const name = p.applicantType === "Vendor" ? p.companyName : p.fullName.split(" ")[0];
+
+  $("#successTitle").textContent = allDup ? "You have already applied" : "Application received";
+  $("#successText").textContent = allDup
+    ? `This email is already registered for ${list}. If you have not joined the WhatsApp group yet please join now.`
+    : `Thank you ${name}. Your application for ${list} has been received.` +
+      (dup.length ? ` (${dup.join(", ")} was already registered earlier.)` : "") +
+      ` All project updates and onboarding steps are shared only in the WhatsApp group.`;
+  $("#mustText").textContent = langs.length > 1
+    ? "Please join the WhatsApp group for every language below. This is required to be considered."
+    : "Joining the WhatsApp group is required to be considered for this project.";
+  $("#waList").innerHTML = langs.map(l => {
+    const link = by[l] && validWa(by[l].whatsapp) ? by[l].whatsapp : "";
+    return link
+      ? `<a class="wa" href="${esc(link)}" target="_blank" rel="noopener">${WA_ICON}<span>Join ${esc(l)} WhatsApp Group</span></a>`
+      : `<div class="wa-pending">${esc(l)}: the group link will be sent to your email and WhatsApp shortly.</div>`;
+  }).join("");
+  $("#refText").textContent = `Reference ID: ${p.reference}`;
+  form.style.display = "none"; $("#coverageCard").style.display = "none";
+  $("#success").style.display = "block";
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function showClosed(){
+  form.style.display = "none"; $("#coverageCard").style.display = "none"; $("#success").style.display = "none";
+  $("#closed").style.display = "block";
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+if(/^https:/.test(SCRIPT_URL)) fetch(SCRIPT_URL).then(r => r.json()).then(d => { if(d && d.accepting === false) showClosed(); }).catch(() => {});
+
+syncType();
+</script>
+</body>
+</html>
